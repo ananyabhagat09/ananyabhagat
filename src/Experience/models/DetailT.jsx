@@ -6,8 +6,9 @@ Command: npx gltfjsx@6.5.3 public/models/DetailT-v1.glb -o src/Experience/models
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export function Model(props) {
-  const { nodes, materials } = useGLTF('/DetailT-v1.glb')
+export default function DetailT(props) {
+  const { nodes, materials } = useGLTF('/models/DetailT-v1.glb')
+
   return (
     <group {...props} dispose={null}>
       <group position={[-9.876, 70.311, -4.071]} rotation={[Math.PI / 2, 0, 0]}>
@@ -29,4 +30,4 @@ export function Model(props) {
   )
 }
 
-useGLTF.preload('/DetailT-v1.glb')
+useGLTF.preload('/models/DetailT-v1.glb')
