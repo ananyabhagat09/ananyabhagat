@@ -1,4 +1,5 @@
-import { React, Suspense, useState, useRef } from "react";
+import AboutMe from "./models/AboutMe";
+import { React, Suspense, useState } from "react";
 
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
@@ -43,7 +44,7 @@ const Scene = ({
       new THREE.Vector3(-9, 69.2, 1.22),
       new THREE.Vector3(-7.8, 68.72, 3.04),
       new THREE.Vector3(-8.01, 69.97, -1.72),
-      new THREE.Vector3(-3, 68.21, 0.308), //close door
+      new THREE.Vector3(-3, 68.21, 0.308),
       new THREE.Vector3(-2.4, 68.47, 7.1),
       new THREE.Vector3(-2, 70, 17),
       new THREE.Vector3(1.4, 65, 39),
@@ -110,6 +111,7 @@ const Scene = ({
     for (let i = 0; i < rotationTargets.length - 1; i++) {
       const start = rotationTargets[i];
       const end = rotationTargets[i + 1];
+
       if (progress >= start.progress && progress <= end.progress) {
         const lerpFactor =
           (progress - start.progress) / (end.progress - start.progress);
@@ -137,7 +139,10 @@ const Scene = ({
 
   useFrame((state) => {
     if (camera) {
-      const newPulseIntensity = (Math.sin(state.clock.elapsedTime * 3) + 1) / 2;
+      // Slower breathing animation
+      const newPulseIntensity =
+        (Math.sin(state.clock.elapsedTime * 2.0) + 1) / 2;
+
       setPulseIntensity(newPulseIntensity);
 
       let newProgress = THREE.MathUtils.lerp(
@@ -158,7 +163,6 @@ const Scene = ({
 
       const basePoint = cameraCurve.getPoint(newProgress);
 
-      // Update group position (path animation)
       cameraGroup.current.position.x = THREE.MathUtils.lerp(
         cameraGroup.current.position.x,
         basePoint.x,
@@ -175,17 +179,18 @@ const Scene = ({
         0.1
       );
 
-      // Update camera local position (parallax)
       camera.current.position.x = THREE.MathUtils.lerp(
         camera.current.position.x,
         mouseOffset.current.x,
         0.1
       );
+
       camera.current.position.y = THREE.MathUtils.lerp(
         camera.current.position.y,
         -mouseOffset.current.y,
         0.1
       );
+
       camera.current.position.z = 0;
 
       const targetQuaternion = getLerpedRotation(newProgress);
@@ -199,7 +204,7 @@ const Scene = ({
   return (
     <>
       <Environment
-        background={true}
+        background
         backgroundRotation={[0, Math.PI / 2, 0]}
         files={[
           "/cubemap/px.webp",
@@ -210,10 +215,18 @@ const Scene = ({
           "/cubemap/nz.webp",
         ]}
       />
+
       <Suspense fallback={null}>
         <House />
         <BackGrass />
-        <Detail progress={scrollProgress} pulseIntensity={pulseIntensity} />
+
+        <Detail
+          progress={scrollProgress}
+          pulseIntensity={pulseIntensity}
+        />
+
+        <AboutMe />
+
         <Extras />
         <ExtrasTwo />
         <ExtrasThree progress={scrollProgress} />

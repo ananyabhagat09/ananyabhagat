@@ -1,3 +1,4 @@
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { React, useEffect, useRef, useState } from "react";
 
 import * as THREE from "three";
@@ -113,6 +114,15 @@ const Experience = () => {
           lerpFactor={lerpFactor}
           mouseOffset={mouseOffset}
         />
+        <EffectComposer>
+          <Bloom
+            intensity={1.4}
+            luminanceThreshold={0.25}
+            luminanceSmoothing={0.9}
+            mipmapBlur
+          />
+        </EffectComposer>
+
         <group ref={cameraGroup}>
           <PerspectiveCamera
             ref={camera}
