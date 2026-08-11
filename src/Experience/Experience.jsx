@@ -23,12 +23,38 @@ const Experience = () => {
   useEffect(() => {
     const handleWheel = (e) => {
       if (isModalOpen) return;
+
       const normalized = normalizeWheel(e);
 
+      const direction = Math.sign(normalized.pixelY);
+
+      const current = targetScrollProgress.current;
+
+      // At the bottom + scrolling down:
+      // let the normal webpage scroll.
+      if (current >= 1 && direction > 0) {
+        return;
+      }
+
+      // At the top + scrolling up:
+      // let the normal webpage scroll.
+      if (current <= 0 && direction < 0) {
+        return;
+      }
+
+      // Otherwise, Minecraft owns the scroll.
+      e.preventDefault();
+
       targetScrollProgress.current +=
-        Math.sign(normalized.pixelY) *
+        direction *
         scrollSpeed *
         Math.min(Math.abs(normalized.pixelY) / 100, 1);
+
+      // Keep Minecraft between 0 and 1.
+      targetScrollProgress.current = Math.max(
+        0,
+        Math.min(1, targetScrollProgress.current)
+      );
     };
 
     const handleMouseMove = (e) => {
@@ -54,9 +80,11 @@ const Experience = () => {
       if (lastTouchY.current !== null) {
         const deltaY = e.touches[0].clientY - lastTouchY.current;
         const touchMultiplier = 0.3;
+
         targetScrollProgress.current +=
           Math.sign(deltaY) * scrollSpeed * touchMultiplier;
       }
+
       lastTouchY.current = e.touches[0].clientY;
     };
 
@@ -72,7 +100,9 @@ const Experience = () => {
 
     const handleMouseDrag = (e) => {
       if (!isSwiping.current || e.pointerType === "touch") return;
+
       const mouseMultiplier = 0.2;
+
       targetScrollProgress.current +=
         Math.sign(e.movementY) * scrollSpeed * mouseMultiplier;
     };
@@ -81,13 +111,23 @@ const Experience = () => {
       isSwiping.current = false;
     };
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("wheel", handleWheel, {
+      passive: false,
+    });
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mousemove", handleMouseDrag);
     window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("touchstart", handleTouchStart, { passive: false });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    window.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+
+    window.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
+
     window.addEventListener("touchend", handleTouchEnd);
 
     return () => {
@@ -104,7 +144,10 @@ const Experience = () => {
 
   return (
     <>
-      <Canvas flat={true} eventSource={document.getElementById("root")}>
+      <Canvas
+        flat={true}
+        eventSource={document.getElementById("root")}
+      >
         <Scene
           cameraGroup={cameraGroup}
           camera={camera}
@@ -114,6 +157,7 @@ const Experience = () => {
           lerpFactor={lerpFactor}
           mouseOffset={mouseOffset}
         />
+
         <EffectComposer>
           <Bloom
             intensity={1.4}
@@ -128,7 +172,7 @@ const Experience = () => {
             ref={camera}
             makeDefault
             fov={70}
-            position={[0, 0, 0]} // Reset to center of group
+            position={[0, 0, 0]}
           />
         </group>
       </Canvas>
