@@ -109,27 +109,18 @@ const LoadingScreen = () => {
             </div>
           )}
 
-          {/* Ready state */}
-          {loadingComplete && !isRevealed && (
-            <>
-              <div
-                className={`instructions-container ${
-                  isRevealed ? "revealed" : ""
-                }`}
-              >
-                World ready.
-              </div>
+         {/* Ready state */}
+{loadingComplete && !isRevealed && (
+  <>
+    <div className="ready-scroll-message">
+      Scroll ↓ to explore the world ✦
+    </div>
 
-              <div className="instructions-container">
-                Scroll ↓ to explore the world ✦
-              </div>
-
-              <Button onClick={handleReveal}>
-                &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
-              </Button>
-            </>
-          )}
-
+    <Button onClick={handleReveal}>
+      &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
+    </Button>
+  </>
+)}
         </div>
       </div>
     </>
