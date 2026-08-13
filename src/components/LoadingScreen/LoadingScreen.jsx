@@ -79,31 +79,56 @@ const LoadingScreen = () => {
 
         <div className="loading-screen-info-container">
 
+          {/* Greeting */}
           <div
             className={`intro-message-container ${
               isRevealed ? "revealed" : ""
             }`}
           >
-            {loadingComplete
-              ? "World ready."
-              : loadingMessages[messageIndex]}
+            Hi 👋! Thanks for stopping by!
           </div>
 
-          <div
-            className={`instructions-container ${
-              isRevealed ? "revealed" : ""
-            }`}
-          >
-            {loadingComplete
-              ? "Scroll ↓ to explore the world."
-              : ""}
-          </div>
+          {/* Loading message */}
+          {!loadingComplete && (
+            <div
+              className={`instructions-container ${
+                isRevealed ? "revealed" : ""
+              }`}
+            >
+              {loadingMessages[messageIndex]}
+            </div>
+          )}
 
-          {loadingComplete && !isRevealed ? (
-            <Button onClick={handleReveal}>
-              &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
-            </Button>
-          ) : null}
+          {/* Loading bar */}
+          {!loadingComplete && (
+            <div className="loading-bar-container">
+              <div
+                className="loading-bar"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+          )}
+
+          {/* Ready state */}
+          {loadingComplete && !isRevealed && (
+            <>
+              <div
+                className={`instructions-container ${
+                  isRevealed ? "revealed" : ""
+                }`}
+              >
+                World ready.
+              </div>
+
+              <div className="instructions-container">
+                Scroll ↓ to explore the world ✦
+              </div>
+
+              <Button onClick={handleReveal}>
+                &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
+              </Button>
+            </>
+          )}
 
         </div>
       </div>
