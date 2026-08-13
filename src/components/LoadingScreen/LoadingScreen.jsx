@@ -28,7 +28,6 @@ const LoadingScreen = () => {
 
   const { setIsAudioEnabled } = useAudioStore();
 
-  // Cycle through the loading messages while the world loads
   useEffect(() => {
     if (progress >= 100) return;
 
@@ -64,7 +63,6 @@ const LoadingScreen = () => {
   return (
     <div className="loading-screen">
 
-      {/* Top half of loading transition */}
       <div
         className={`background-top-half ${
           isRevealed ? "revealed" : ""
@@ -72,7 +70,6 @@ const LoadingScreen = () => {
         onTransitionEnd={handleAnimationFinished}
       />
 
-      {/* Bottom half of loading transition */}
       <div
         className={`background-bottom-half ${
           isRevealed ? "revealed" : ""
@@ -81,18 +78,18 @@ const LoadingScreen = () => {
 
       <div className="loading-screen-info-container">
 
-        {/* Greeting */}
-        <div
-          className={`intro-message-container ${
-            isRevealed ? "revealed" : ""
-          }`}
-        >
-          Hi 👋! Thanks for stopping by!
-        </div>
-
-        {/* Loading state */}
-        {!loadingComplete && (
+        {!loadingComplete ? (
           <>
+            {/* Greeting shown only while loading */}
+            <div
+              className={`intro-message-container ${
+                isRevealed ? "revealed" : ""
+              }`}
+            >
+              Hi 👋! Thanks for stopping by!
+            </div>
+
+            {/* Rotating loading messages */}
             <div
               className={`instructions-container ${
                 isRevealed ? "revealed" : ""
@@ -109,25 +106,29 @@ const LoadingScreen = () => {
               />
             </div>
           </>
-        )}
-
-        {/* Ready state */}
-        {loadingComplete && !isRevealed && (
-          <div className="ready-state">
-
-            <div className="ready-message">
+        ) : (
+          <>
+            {/* Ready state */}
+            <div
+              className={`intro-message-container ${
+                isRevealed ? "revealed" : ""
+              }`}
+            >
               World ready.
             </div>
 
-            <div className="scroll-message">
+            <div
+              className={`intro-message-container ${
+                isRevealed ? "revealed" : ""
+              }`}
+            >
               Scroll ↓ to explore the world ✦
             </div>
 
             <Button onClick={handleReveal}>
               &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
             </Button>
-
-          </div>
+          </>
         )}
 
       </div>
