@@ -78,18 +78,17 @@ const LoadingScreen = () => {
 
       <div className="loading-screen-info-container">
 
+        {/* LOADING STATE */}
         {!loadingComplete ? (
           <>
-            {/* Greeting shown only while loading */}
             <div
               className={`intro-message-container ${
                 isRevealed ? "revealed" : ""
               }`}
             >
-              Hi 👋! Thanks for stopping by!
+              Hi! 👋 Thanks for stopping by!
             </div>
 
-            {/* Rotating loading messages */}
             <div
               className={`instructions-container ${
                 isRevealed ? "revealed" : ""
@@ -98,7 +97,6 @@ const LoadingScreen = () => {
               {loadingMessages[messageIndex]}
             </div>
 
-            {/* Loading progress bar */}
             <div className="loading-bar-container">
               <div
                 className="loading-bar"
@@ -107,28 +105,23 @@ const LoadingScreen = () => {
             </div>
           </>
         ) : (
-          <>
-            {/* Ready state */}
-            <div
-              className={`intro-message-container ${
-                isRevealed ? "revealed" : ""
-              }`}
-            >
+
+          /* READY STATE */
+          <div className="ready-state">
+
+            <div className="ready-message">
               World ready.
             </div>
 
-            <div
-              className={`intro-message-container ${
-                isRevealed ? "revealed" : ""
-              }`}
-            >
+            <div className="ready-message">
               Scroll ↓ to explore the world ✦
             </div>
 
             <Button onClick={handleReveal}>
               &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
             </Button>
-          </>
+
+          </div>
         )}
 
       </div>
