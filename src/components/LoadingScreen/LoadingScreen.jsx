@@ -116,7 +116,7 @@ const LoadingScreen = () => {
           !isRevealed && (
             <>
               <div className="instructions-container">
-                Scroll ↓ to explore the world ✦
+                Scroll ↓ to explore the world 
               </div>
 
               <Button onClick={handleReveal}>
