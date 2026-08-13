@@ -61,34 +61,35 @@ const LoadingScreen = () => {
   const loadingComplete = progress >= 100;
 
   return (
-    <div className="loading-screen">
+    <>
+      <div className="loading-screen">
 
-      <div
-        className={`background-top-half ${
-          isRevealed ? "revealed" : ""
-        }`}
-        onTransitionEnd={handleAnimationFinished}
-      />
+        <div
+          className={`background-top-half ${
+            isRevealed ? "revealed" : ""
+          }`}
+          onTransitionEnd={handleAnimationFinished}
+        ></div>
 
-      <div
-        className={`background-bottom-half ${
-          isRevealed ? "revealed" : ""
-        }`}
-      />
+        <div
+          className={`background-bottom-half ${
+            isRevealed ? "revealed" : ""
+          }`}
+        ></div>
 
-      <div className="loading-screen-info-container">
+        <div className="loading-screen-info-container">
 
-        {/* LOADING STATE */}
-        {!loadingComplete ? (
-          <>
-            <div
-              className={`intro-message-container ${
-                isRevealed ? "revealed" : ""
-              }`}
-            >
-              Hi! 👋 Thanks for stopping by!
-            </div>
+          {/* Greeting */}
+          <div
+            className={`intro-message-container ${
+              isRevealed ? "revealed" : ""
+            }`}
+          >
+            Hi 👋! Thanks for stopping by!
+          </div>
 
+          {/* Loading message */}
+          {!loadingComplete && (
             <div
               className={`instructions-container ${
                 isRevealed ? "revealed" : ""
@@ -96,36 +97,42 @@ const LoadingScreen = () => {
             >
               {loadingMessages[messageIndex]}
             </div>
+          )}
 
+          {/* Loading bar */}
+          {!loadingComplete && (
             <div className="loading-bar-container">
               <div
                 className="loading-bar"
                 style={{ width: `${progress}%` }}
-              />
+              ></div>
             </div>
-          </>
-        ) : (
+          )}
 
-          /* READY STATE */
-          <div className="ready-state">
+          {/* Ready state */}
+          {loadingComplete && !isRevealed && (
+            <>
+              <div
+                className={`instructions-container ${
+                  isRevealed ? "revealed" : ""
+                }`}
+              >
+                World ready.
+              </div>
 
-            <div className="ready-message">
-              World ready.
-            </div>
+              <div className="instructions-container">
+                Scroll ↓ to explore the world ✦
+              </div>
 
-            <div className="ready-message">
-              Scroll ↓ to explore the world ✦
-            </div>
+              <Button onClick={handleReveal}>
+                &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
+              </Button>
+            </>
+          )}
 
-            <Button onClick={handleReveal}>
-              &nbsp;&nbsp;&nbsp; Enter World &nbsp;&nbsp;&nbsp;
-            </Button>
-
-          </div>
-        )}
-
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
